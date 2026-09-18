@@ -1,5 +1,6 @@
-﻿from PyQt5 import QtWidgets, QtGui
+from PyQt5 import QtWidgets, QtGui
 from model import rgb_to_xyz, xyz_to_rgb, rgb_to_hsv, hsv_to_rgb, xyz_to_hsv, hsv_to_xyz
+from PyQt5 import QtCore
 
 class ColorController:
     def __init__(self, ui):
@@ -61,6 +62,11 @@ class ColorController:
         self.ui.doubleSpinBox_2.valueChanged.connect(self.on_rgb_spinbox_changed)
         self.ui.doubleSpinBox_3.valueChanged.connect(self.on_rgb_spinbox_changed)
         
+        self.help_button = QtWidgets.QPushButton("Help", self.ui.centralwidget)
+        self.help_button.setGeometry(QtCore.QRect(810, 10, 70, 30))
+        self.help_button.setStyleSheet("background-color: #4CAF50; color: white; border-radius: 5px; font-weight: bold;")
+        self.help_button.clicked.connect(self.show_help)
+
     def on_rgb_spinbox_changed(self):
 
         r = int(self.ui.doubleSpinBox.value())
@@ -265,3 +271,13 @@ class ColorController:
         self.ui.pushButton_4.setStyleSheet(
             f"background-color: rgb({r}, {g}, {b}); border: 1px solid black;"
         )
+
+    def show_help(self):
+        msg = QtWidgets.QMessageBox()
+        msg.setWindowTitle("Справка")
+        msg.setText("""Приложение для конвертации цветов между форматами RGB, XYZ и HSV.
+        Используйте ползунки для регулировки.
+        RGB (Red, Green, Blue) — 0-255
+        XYZ (CIE 1931) — 0-100
+        HSV (Hue, Saturation, Value) — H: 0-360°, S: 0-100%, V: 0-100%""")
+        msg.exec_()
